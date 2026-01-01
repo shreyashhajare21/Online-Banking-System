@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Welcome, <span th:text="${userEmail}">User</span>!</h1>
+        <p>You are now logged in.</p>
+    </header>
+
+    <div class="dashboard-actions">
+        <form th:action="@{/open-account}" method="get" style="display:inline;">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <button type="submit">Open New Account</button>
+        </form>
+        <form th:action="@{/debit}" method="get" style="display:inline;">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <button type="submit">Debit Money</button>
+        </form>
+        <form th:action="@{/credit}" method="get" style="display:inline;">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <button type="submit">Credit Money</button>
+        </form>
+        <form th:action="@{/transfer}" method="get" style="display:inline;">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <button type="submit">Transfer Money</button>
+        </form>
+        <form th:action="@{/check-balance}" method="get" style="display:inline;">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <button type="submit">Check Balance</button>
+        </form>
+        <button onclick="window.location.href='/'">Logout</button>
+    </div>
+
+    <!-- Show forms for debit, credit, transfer if action is set -->
+    <div th:if="${action} == 'debit'">
+        <form th:action="@{/debit}" method="post">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <label>Amount to Debit:</label>
+            <input type="number" name="amount" min="1" step="0.01" required />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div th:if="${action} == 'credit'">
+        <form th:action="@{/credit}" method="post">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <label>Amount to Credit:</label>
+            <input type="number" name="amount" min="1" step="0.01" required />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div th:if="${action} == 'transfer'">
+        <form th:action="@{/transfer}" method="post">
+            <input type="hidden" name="userEmail" th:value="${userEmail}" />
+            <label>Recipient Email:</label>
+            <input type="email" name="toEmail" required />
+            <label>Amount to Transfer:</label>
+            <input type="number" name="amount" min="1" step="0.01" required />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div th:if="${message != null}" style="margin-top:20px; color:green;">
+        <p th:text="${message}"></p>
+    </div>
+</div>
+</body>
+</html>
